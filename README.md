@@ -6,6 +6,11 @@ Momentum Trading Framework in R
 - Momentum Strategy Backtesting
 - Strategy Analytics
 
+Enhanced momentum strategy ranking framework
+
+- Return momentum
+- Stepwise Correlation
+- Volatility 
 
 
 momentum
