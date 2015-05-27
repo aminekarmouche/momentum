@@ -7,7 +7,6 @@ require(xts)
 require(timeSeries)
 require(stargazer)
 
-################Functions flexible########
 FAA <- function(prices, monthLookback = 4,
                 weightMom = 1, weightVol = .5, weightCor = .5, 
                 riskFreeName = NULL, bestN = 3,
@@ -96,6 +95,7 @@ FAA <- function(prices, monthLookback = 4,
   colnames(strategyReturns) <- paste(monthLookback, weightMom, weightVol, weightCor, sep="_")
   return(strategyReturns)
   }
+
 
 #'Stepwise Correlation Rank
 #'@description computes a stepwise correlation ranking of vectors starting from a given subset of vectors
@@ -189,33 +189,41 @@ riskFree <- do.call(cbind, args = tmp)
 colnames(riskFree) <- gsub(".Adjusted", "", colnames(riskFree))
 alignedVFISX <- align(x = as.timeSeries(riskFree), by = "1d", method = "before", include.weekends = FALSE)
 
-#merge all the data
+#merge risk free
 mergedData <- merge(as.timeSeries(dataCsv),alignedVFISX)
 
 
 
+
+#merge all the data
+# mergedData <- merge(mergedData,alignedSecurities)
+
+
+
 #with and without stewise correlation ranking
-original <- FAA(mergedData, riskFreeName = "VFISX")
-swc <- FAA(mergedData, riskFreeName="VFISX", stepCorRank = TRUE)
+original <- FAA(mergedData, riskFreeName="VFISX", monthLookback = 4)
+swc <- FAA(mergedData, riskFreeName="VFISX", stepCorRank = TRUE, monthLookback = 4)
 
 
-original6 <- FAA(mergedData, riskFreeName = "VFISX", monthLookback = 3)  
-swc6 <- FAA(mergedData, riskFreeName="VFISX", stepCorRank = TRUE, monthLookback = 3)
+# original6 <- FAA(mergedData, weightMom = 0.7, weightVol = 0.3, weightCor = 0.3)  
+# swc6 <- FAA(mergedData,stepCorRank = TRUE, weightMom = 0.7, weightVol = 0.3, weightCor = 0.3)
 
 
 ## ---- strategies
 #plotting the data
-plot <- cbind(original, swc, original6, swc6)
-names(plot) <- c("original", "swc", "original6", "swc6")
+plot <- cbind(original, swc)
+names(plot) <- c("original", "swc")
 charts.PerformanceSummary(plot)
 
+statsTable <- data.frame(t(rbind(Return.annualized(plot)*100, maxDrawdown(plot)*100, SharpeRatio.annualized(plot))))
+statsTable$ReturnDrawdownRatio <- statsTable[,1]/statsTable[,2]
+statsTable
+
 ## ---- cortable
-#correlation table - eliminate first row
-returns <- (Return.calculate(dataCsv))
+returns <- (Return.calculate(mergedData))
 correlationTable <- cor(returns[-1,])
 stargazer(correlationTable, title = "Correlation coefficients of the daily market returns, 1998-2014")
 
 ## ---- stats
 #statistics
-basicStats(mergedData)
-
+# basicStats(mergedData)
