@@ -1,27 +1,33 @@
 # momentum
-Momentum Trading Framework in R
+Momentum Investment Framework in R for my masters thesis. Updates will be pushed after the thesis defense!
+- Financial Data collection from Yahoo finance (MENA financial markets)
+- Descriptive statistics 
+- Momentum Strategy Backtesting (1998-2014)
+- Strategy Performance Analytics (using annualized returns and financial ratios such as Sharpe and Calmar)
 
-- Financial Data collection from Yahoo finance
-- Momentum trading strategies
-- Momentum Strategy Backtesting
-- Strategy Analytics
-
-Enhanced momentum strategy ranking framework
-
+Enhanced momentum strategy ranking framework using the following second order characteristics
 - Return momentum
 - Stepwise Correlation
 - Volatility 
 
+# Prerequisites
+Packages include
+- Quantmod
+- FinancialInstrument
+- Performance Analytics
 
-momentum
-Momentum Trading Framework in R
+# Running the scripts
+## Strategies
+```
+r -f main.r
+```
+##Descriptive stats
+in R/functions
+```
+r -f stats.r
+```
 
-Financial Data collection from Yahoo finance
-Momentum trading strategies
-Momentum Strategy Backtesting
-Strategy Analytics
-Enhanced momentum strategy ranking framework
 
-Return momentum
-Stepwise Correlation
-Volatility
+
+
+
