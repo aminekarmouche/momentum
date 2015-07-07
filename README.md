@@ -21,11 +21,16 @@ Packages include
 ```
 r -f main.r
 ```
+
+##Data
+Data should be formatted in csv format and put in Data/master.csv
+
 ##Descriptive stats
 in R/functions
 ```
 r -f stats.r
 ```
+
 
 
 
